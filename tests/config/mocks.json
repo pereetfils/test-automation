@@ -24,5 +24,24 @@
         }
       ]
     }
+  },
+
+  {
+    "httpRequest": {
+      "path": "/users"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "body": [
+        {
+          "id": "001",
+          "email": "khatira@sondomaine.fr"
+        },
+        {
+          "id": "002",
+          "email": "khatira_khatira@sondomaine.fr"
+        }
+      ]
+    }
   }
 ]
