@@ -1,5 +1,5 @@
 name: Commit workflow
-run-name: Executing every commit required actions (tests, static analysis...) 🚀
+run-name: Executing every commit required actions (tests, static analysis...)
 on: [push]
 jobs:
   unit-tests:
