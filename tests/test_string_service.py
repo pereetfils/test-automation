@@ -4,7 +4,9 @@ from src.services.string_service import to_uppercase
 
 @pytest.mark.skip()
 def test_uppercase_with_lowercased_str():
+
     assert to_uppercase('hellr2-d2') == 'HELLR2-D2'
+
 
 def test_uppercase_with_uppercased_str():
     assert to_uppercase('HI YOU R2D2') == 'HI YOU R2D2'
