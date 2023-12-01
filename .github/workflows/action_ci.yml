@@ -19,3 +19,5 @@ jobs:
         run: pytest
       - name: test ruff
         run: ruff check ./src/services/string_service.py
+      - name: test ruff
+        run: ruff check ./src/services/string_service.py
