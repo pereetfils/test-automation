@@ -2,7 +2,7 @@ def to_uppercase(value: str) -> str:
     if not value:
         return value
 
-    if not type(value) == str:
+    if not isinstance(value) == str:
         return value
 
     return value.upper()
