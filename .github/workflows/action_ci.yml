@@ -1,5 +1,5 @@
 name: Commit workflow
-run-name: Executing every commit required actions (tests, static analysis...) 🚀
+run-name: Executing every commit required actions (tests, static analysis...)
 on: [push]
 jobs:
   unit-tests:
@@ -17,3 +17,5 @@ jobs:
         run: pip install --no-cache-dir -r requirements.txt
       - name: Unit tests
         run: pytest
+      - name: test ruff
+        run: ruff check ./src/services/string_service.py

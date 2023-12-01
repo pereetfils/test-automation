@@ -1,6 +1,7 @@
-t=[
-            {"id" : "001","email" : "khatira@sondomaine.fr"},
-        ]
+    """_summary_
+    """
+
+t=[{"id" : "001","email" : "khatira@sondomaine.fr"}]
 
 b=[
             {"id" : "011","email" : "khatira_KHATIRA@sondomaine.fr"},
