@@ -1,73 +1,91 @@
+import collections
+# https://docs.python.org/3/library/typing.html#the-any-type
+from typing import Any
+import numpy as n
+
+
 
 from src.services.user_fetcher_service import UserFetcherService
 from src.services.user_service import UserService
 
+def is_equal_unordered(value_a: [Any], value_b: [Any]):
+    narr1 = n.array([value_a])
+    narr2 = n.array([value_b])
 
+    return (narr1 == narr2).all()
 
-def test_list_users(monkeypatch):
-    # we define a function that will replace the existing function
-    # instead of calling the mocked server, we use a controlled dataset
+def test_list_user_no_user(monkeypatch):
     def mock_get_users(*args):
-        return [
-            {"id" : "001","email" : "khatira@sondomaine.fr"},
-        ]
+        return []
 
     monkeypatch.setattr(UserFetcherService, 'get_users', mock_get_users)
 
     user_service = UserService(user_fetcher_service=UserFetcherService())
-   
-    user = user_service.list_users()
-
-    assert user == [{'id': '001', 'email': 'khatira@sondomaine.fr'}]
-
-###test de la case dans l email ###
-def test_case_in_email_users(monkeypatch):
-    # we define a function that will replace the existing function
-    # instead of calling the mocked server, we use a controlled dataset
-    def mock_get_users(*args):
-        return [
-            {"id" : "001","email" : "khatirA@sondomaine.fr"},
-        ]
-
-    monkeypatch.setattr(UserFetcherService, 'get_users', mock_get_users)
-
-    user_service = UserService(user_fetcher_service=UserFetcherService())
-   
-    user = user_service.list_users()
-
-    assert user == [{'id': '001', 'email': 'khatira@sondomaine.fr'}]
-### test +ieurs usilisateurs ###
-
-def test_case_in_email_users(monkeypatch):
-    # we define a function that will replace the existing function
-    # instead of calling the mocked server, we use a controlled dataset
-    def mock_get_users(*args):
-        return [{'id': '001', 'email': 'khatira@sondomaine.fr'},{'id': '011', 'email': 'khatira_KHATIRA@sondomaine.fr'}]
-
-    monkeypatch.setattr(UserFetcherService, 'get_users', mock_get_users)
-
-    user_service = UserService(user_fetcher_service=UserFetcherService())
-   
     users = user_service.list_users()
 
-    assert users == [{'id': '001', 'email': 'khatira@sondomaine.fr'},{'id': '011', 'email': 'khatira_khatira@sondomaine.fr'}]
+    assert is_equal_unordered(users, [])
+
+
+def test_list_user_multiple_users(monkeypatch):
+    def mock_get_users(*args):
+        return [{
+            'id': 1,
+            'email': 'lolo@gmail.com'
+        }, {
+            'id': 2,
+            'email': 'lala@gmail.com'
+        }, {
+            'id': 3,
+            'email': 'lili@gmail.com'
+        }]
+
+    monkeypatch.setattr(UserFetcherService, 'get_users', mock_get_users)
+
+    user_service = UserService(user_fetcher_service=UserFetcherService())
+    users = user_service.list_users()
+
+    assert is_equal_unordered(users, [
+        {
+            'id': 1,
+            'email': 'lolo@gmail.com'
+        }, {
+            'id': 2,
+            'email': 'lala@gmail.com'
+        }, {
+            'id': 3,
+            'email': 'lili@gmail.com'
+        }
+    ])
 
 
 
-"""
-def test_list_authors(monkeypatch):
-       
-    def mock_get_books(*args):
-        return [
-        {'id': 'aaa-001', 'name': 'Origine', 'author': {'firstname': 'Dan', 'lastname': 'Brown'}},
-        {'id': 'aaa-002', 'name': 'le jour', 'author': {'firstname': 'Dan', 'lastname': 'Brown'}},
-        {'id': 'aaa-003', 'name': 'Anges & Démons', 'author': {'firstname': 'Danny', 'lastname': 'Boy'}},
-    ]
+def test_list_user_multiple_users_with_lowercase_check(monkeypatch):
+    def mock_get_users(*args):
+        return [{
+            'id': 1,
+            'email': 'lolo@gmail.com'
+        }, {
+            'id': 2,
+            'email': 'LALA@gmail.com'
+        }, {
+            'id': 3,
+            'email': 'lili@gmail.com'
+        }]
 
-    monkeypatch.setattr(BookFetcherService, 'get_books', mock_get_books)
-    book_service = BookService(book_fetcher_service=BookFetcherService())
-    nom_prenom = book_service.list_books_authors()
-    #['author']['lastname'] + ' ' + book['author']['firstname']
-    # le resultat d assert est de comparer 2 tableau ordonés: collections.Counter
-    assert collections.Counter(nom_prenom) == collections.Counter (['Brown Dan', 'Boy Danny'])
-"""
+    monkeypatch.setattr(UserFetcherService, 'get_users', mock_get_users)
+
+    user_service = UserService(user_fetcher_service=UserFetcherService())
+    users = user_service.list_users()
+
+    assert is_equal_unordered(users, [
+        {
+            'id': 1,
+            'email': 'lolo@gmail.com'
+        }, {
+            'id': 2,
+            'email': 'lala@gmail.com'
+        }, {
+            'id': 3,
+            'email': 'lili@gmail.com'
+        }
+    ])
